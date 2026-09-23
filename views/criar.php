@@ -3,39 +3,65 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Inserir notícia</title>
+    <title>Registar Sócio</title>
     <link rel="stylesheet" href="css/main_styles.css">
 </head>
 
 <body>
 
-    <h1>Inserir Nova Notícia</h1>
+    <h1>Registar Novo Sócio</h1>
 
     <form action="index.php?acao=criar" method="POST">
 
-        <label>Título:</label><br>
-
+        <label>Número de Sócio:</label><br>
         <input
             type="text"
-            name="titulo"
+            name="numero_socio"
             required
             style="width:50%;"
         >
 
         <br><br>
 
-        <label>Conteúdo:</label><br>
-
-        <textarea
-            name="conteudo"
-            rows="10"
+        <label>Nome Completo:</label><br>
+        <input
+            type="text"
+            name="nome_completo"
             required
             style="width:50%;"
-        ></textarea>
+        >
 
         <br><br>
 
-        <button type="submit">Guardar Notícia</button>
+        <label>Categoria:</label><br>
+        <input
+            type="text"
+            name="categoria"
+            required
+            style="width:50%;"
+        >
+
+        <br><br>
+
+        <label>Contacto:</label><br>
+        <input
+            type="text"
+            name="contacto"
+            required
+            style="width:50%;"
+        >
+
+        <br><br>
+
+        <label>Estado das Quotas:</label><br>
+        <select name="quota_regularizada" required style="width:50%; padding: 5px;">
+            <option value="1">Regularizado</option>
+            <option value="0">Em Dívida</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Guardar Sócio</button>
 
         <a href="index.php">Cancelar</a>
 
