@@ -32,5 +32,6 @@
             <a href="index.php?acao=registo">Ainda não tem conta? Registar</a>
         </form>
     </main>
+
 </body>
 </html>

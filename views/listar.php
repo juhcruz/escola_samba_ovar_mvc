@@ -23,6 +23,10 @@
         <main class="table-container">
             <h2 class="page-title">Gestão de Sócios</h2>
 
+            <?php if (isset($sucesso)): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
+            <?php endif; ?>
+
             <div style="margin-bottom: 20px;">
                 <a class="btn btn-success" href="index.php?acao=criar">Adicionar Novo Sócio</a>
             </div>
@@ -35,6 +39,7 @@
                         <th>Categoria</th>
                         <th>Contacto</th>
                         <th>Quotas</th>
+
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -58,11 +63,13 @@
                     <?php else: ?>
                         <tr>
                             <td colspan="6" style="text-align: center;">Nenhum sócio registado até o momento.</td>
+
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </main>
     </div>
+
 </body>
 </html>
