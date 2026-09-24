@@ -2,51 +2,60 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Sócios - Escola de Samba de Ovar</title>
-    <link rel="stylesheet" href="css/main_styles.css">
+    <title>Lista de Registos - Escola de Samba</title>
+    <link rel="stylesheet" href="/escola_samba_ovar_mvc/public/css/main.css">
 </head>
 <body>
-    <h1>Gestão de Sócios - Escola de Samba Juventude Vareira</h1>
-    
-    <div style="margin-bottom: 20px;">
-        <a href="index.php?acao=criar">Adicionar Novo Sócio</a> | 
-        <a href="index.php?acao=registo">Registar Utilizador</a>
+
+    <!-- Cabeçalho do Sistema -->
+    <div class="header">
+        <h1>Escola de Samba - Painel</h1>
+        <div>
+            <a href="index.php?acao=criar">Novo Registo</a>
+            <a href="index.php?acao=logout">Terminar Sessão</a>
+        </div>
     </div>
 
-    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-        <thead>
-            <tr style="background-color: #f2f2f2;">
-                <th>Nº Sócio</th>
-                <th>Nome Completo</th>
-                <th>Categoria</th>
-                <th>Contacto</th>
-                <th>Quotas</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($socios)): ?>
-                <?php foreach ($socios as $socio): ?>
+    <div class="container">
+        <h2 class="page-title">Lista de Registos</h2>
+
+        <?php if (isset($sucesso)): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
+        <?php endif; ?>
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($socio['numero_socio']) ?></td>
-                        <td><?= htmlspecialchars($socio['nome_completo']) ?></td>
-                        <td><?= htmlspecialchars($socio['categoria']) ?></td>
-                        <td><?= htmlspecialchars($socio['contacto']) ?></td>
-                        <td>
-                            <?= ($socio['quota_regularizada'] == 1) ? '<span style="color: green;">Regularizada</span>' : '<span style="color: red;">Em Atraso</span>' ?>
-                        </td>
-                        <td>
-                            <a href="index.php?acao=editar&id=<?= $socio['id'] ?>">Editar</a> | 
-                            <a href="index.php?acao=eliminar&id=<?= $socio['id'] ?>" onclick="return confirm('Tem a certeza que deseja eliminar este sócio?');">Eliminar</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Ações</th>
                     </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="6" style="text-align: center;">Nenhum sócio registado até o momento.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    <!-- Exemplo de loop PHP que você deve ter na sua tabela -->
+                    <?php if (!empty($registos)): ?>
+                        <?php foreach ($registos as $registo): ?>
+                        <tr>
+                            <td><?= $registo['id'] ?></td>
+                            <td><?= htmlspecialchars($registo['nome']) ?></td>
+                            <td><?= htmlspecialchars($registo['utilizador']) ?></td>
+                            <td>
+                                <a href="index.php?acao=editar&id=<?= $registo['id'] ?>" class="btn btn-warning" style="padding: 6px 12px; font-size: 12px;">Editar</a>
+                                <a href="index.php?acao=eliminar&id=<?= $registo['id'] ?>" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;" onclick="return confirm('Tem a certeza que deseja eliminar?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" style="text-align: center;">Nenhum registo encontrado.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </body>
 </html>

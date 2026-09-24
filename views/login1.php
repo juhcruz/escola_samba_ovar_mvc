@@ -2,25 +2,35 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Escola de Samba de Ovar</title>
-    <link rel="stylesheet" href="css/main_styles.css">
+    <title>Login - Escola de Samba Juventude Vareira</title>
+    <link rel="stylesheet" href="/escola_samba_ovar_mvc/public/css/main.css">
 </head>
-<body>
-    <h1>Carnaval de Ovar - Autenticação</h1>
+<body class="login-page">
 
-    <?php if (isset($erro)): ?>
-        <p style="color: red;"><?= htmlspecialchars($erro) ?></p>
-    <?php endif; ?>
+    <div class="login-container">
+        <h2>Entrar</h2>
 
-    <form action="index.php?acao=login" method="POST">
-        <label>Utilizador / E-mail:</label><br>
-        <input type="text" name="utilizador" required style="width: 30%;"><br><br>
+        <?php if (isset($erro)): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
+        <?php endif; ?>
 
-        <label>Palavra-passe:</label><br>
-        <input type="password" name="palavra_passe" required placeholder="Digite a palavra-passe"><br><br>
+        <form action="index.php?acao=login" method="POST">
+            <div class="form-group">
+                <label>E-mail / Utilizador:</label>
+                <input type="text" name="utilizador" class="form-control" required>
+            </div>
 
-        <button type="submit">Entrar</button>
-        <a href="index.php?acao=registo">Ainda não tem conta? Registar</a>
-    </form>
+            <div class="form-group">
+                <label>Palavra-passe:</label>
+                <input type="password" name="palavra_passe" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <p style="margin-top: 15px; text-align: center;">
+                Não tem conta? <a href="index.php?acao=registo" style="color: var(--rosa); font-weight: bold;">Registe-se aqui</a>
+            </p>
+        </form>
+    </div>
+
 </body>
 </html>

@@ -2,37 +2,39 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Sócio - Escola de Samba de Ovar</title>
-    <link rel="stylesheet" href="css/main_styles.css">
+    <title>Editar Registo - Escola de Samba</title>
+    <link rel="stylesheet" href="/escola_samba_ovar_mvc/public/css/main.css">
 </head>
 <body>
-    <h1>Editar Sócio</h1>
 
-    <?php if (isset($erro)): ?>
-        <p style="color: red;"><?= htmlspecialchars($erro) ?></p>
-    <?php endif; ?>
+    <div class="header">
+        <h1>Escola de Samba</h1>
+        <div>
+            <a href="index.php?acao=listar">Voltar à Lista</a>
+        </div>
+    </div>
 
-    <form action="index.php?acao=editar&id=<?= htmlspecialchars($this->socio->id) ?>" method="POST">
-        <label>Número de Sócio:</label><br>
-        <input type="text" name="numero_socio" value="<?= htmlspecialchars($this->socio->numero_socio) ?>" required style="width: 30%;"><br><br>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="page-title">Editar Registo</h2>
 
-        <label>Nome Completo:</label><br>
-        <input type="text" name="nome_completo" value="<?= htmlspecialchars($this->socio->nome_completo) ?>" required style="width: 30%;"><br><br>
+            <form action="index.php?acao=atualizar&id=<?= $registo['id'] ?? '' ?>" method="POST">
+                <div class="form-group">
+                    <label>Nome:</label>
+                    <input type="text" name="nome" class="form-control" value="<?= htmlspecialchars($registo['nome'] ?? '') ?>" required>
+                </div>
 
-        <label>Categoria:</label><br>
-        <input type="text" name="categoria" value="<?= htmlspecialchars($this->socio->categoria) ?>" required style="width: 30%;"><br><br>
+                <div class="form-group">
+                    <label>E-mail:</label>
+                    <input type="text" name="utilizador" class="form-control" value="<?= htmlspecialchars($registo['utilizador'] ?? '') ?>" required>
+                </div>
 
-        <label>Contacto:</label><br>
-        <input type="text" name="contacto" value="<?= htmlspecialchars($this->socio->contacto) ?>" required style="width: 30%;"><br><br>
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+                <a href="index.php?acao=listar" class="btn btn-secondary" style="margin-left: 10px;">Cancelar</a>
+            </form>
+        </div>
+    </div>
 
-        <label>Quota Regularizada:</label><br>
-        <select name="quota_regularizada" style="width: 30%;">
-            <option value="1" <?= ($this->socio->quota_regularizada == 1) ? 'selected' : '' ?>>Regularizada</option>
-            <option value="0" <?= ($this->socio->quota_regularizada == 0) ? 'selected' : '' ?>>Em Atraso</option>
-        </select><br><br>
-
-        <button type="submit">Atualizar Sócio</button>
-        <a href="index.php?acao=listar">Cancelar</a>
-    </form>
 </body>
+</html>
 </html>

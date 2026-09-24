@@ -2,37 +2,38 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Adicionar Novo Sócio - Escola de Samba de Ovar</title>
-    <link rel="stylesheet" href="css/main_styles.css">
+    <title>Criar Registo - Escola de Samba</title>
+    <link rel="stylesheet" href="/escola_samba_ovar_mvc/public/css/main.css">
 </head>
 <body>
-    <h1>Adicionar Novo Sócio - Escola de Samba de Ovar</h1>
 
-    <?php if (isset($erro)): ?>
-        <p style="color: red;"><?= htmlspecialchars($erro) ?></p>
-    <?php endif; ?>
+    <div class="header">
+        <h1>Escola de Samba</h1>
+        <div>
+            <a href="index.php?acao=listar">Voltar à Lista</a>
+        </div>
+    </div>
 
-    <form action="index.php?acao=criar" method="POST">
-        <label>Número de Sócio:</label><br>
-        <input type="text" name="numero_socio" value="<?= isset($proximoNumero) ? htmlspecialchars($proximoNumero) : '' ?>" readonly style="width: 30%; background-color: #e9ecef;"><br><br>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="page-title">Adicionar Novo Registo</h2>
 
-        <label>Nome Completo:</label><br>
-        <input type="text" name="nome_completo" required style="width: 30%;"><br><br>
+            <form action="index.php?acao=guardar" method="POST">
+                <div class="form-group">
+                    <label>Nome:</label>
+                    <input type="text" name="nome" class="form-control" required>
+                </div>
 
-        <label>Categoria:</label><br>
-        <input type="text" name="categoria" required style="width: 30%;"><br><br>
+                <div class="form-group">
+                    <label>E-mail:</label>
+                    <input type="text" name="utilizador" class="form-control" required>
+                </div>
 
-        <label>Contacto:</label><br>
-        <input type="text" name="contacto" required style="width: 30%;"><br><br>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="index.php?acao=listar" class="btn btn-secondary" style="margin-left: 10px;">Cancelar</a>
+            </form>
+        </div>
+    </div>
 
-        <label>Quota Regularizada:</label><br>
-        <select name="quota_regularizada" style="width: 30%;">
-            <option value="1">Regularizada</option>
-            <option value="0">Em Atraso</option>
-        </select><br><br>
-
-        <button type="submit">Guardar Sócio</button>
-        <a href="index.php?acao=listar">Cancelar</a>
-    </form>
 </body>
 </html>
