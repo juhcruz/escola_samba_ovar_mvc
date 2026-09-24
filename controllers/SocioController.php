@@ -1,7 +1,7 @@
 <?php
 
 require_once 'config/Database.php';
-require_once 'models/Socio.php';
+require_once 'models/socio.php';
 
 class SocioController
 {

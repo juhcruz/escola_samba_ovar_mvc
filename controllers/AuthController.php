@@ -1,7 +1,7 @@
 <?php
 
 include_once 'config/Database.php';
-include_once 'models/Socio.php';
+include_once 'models/socio.php';
 
 class SocioController
 {

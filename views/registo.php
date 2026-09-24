@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Registo - Escola de Samba Juventude Vareira </title>
-    <link rel="stylesheet" href="css/main.css">
+    <?php
+    $scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+    $cssPath = str_contains($scriptPath, '/views/') ? '../css/main.css' : 'css/main.css';
+    ?>
+    <link rel="stylesheet" href="<?= htmlspecialchars($cssPath, ENT_QUOTES, 'UTF-8') ?>">
 </head>
 <body>
     <h1> Novo Registo</h1>
