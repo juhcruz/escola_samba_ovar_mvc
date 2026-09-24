@@ -75,7 +75,7 @@ class UtilizadorController
         }
 
         // Carregar a vista de login
-        include 'views/login.php';
+        include 'views/login1.php';
     }
 
     // Terminar sessão (Logout)

@@ -45,9 +45,7 @@ switch ($acao) {
         break;
         
     case 'login':
-        // Caso já tenha o método de login implementado no Controller, chame-o aqui.
-        // Se quiser apenas carregar a vista de login por enquanto:
-        include 'views/login.php';
+        $utilizadorController->login();
         break;
         
     default:

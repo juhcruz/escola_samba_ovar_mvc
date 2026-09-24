@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Adicionar Novo Sócio - Escola de Samba de Ovar</title>
-    <link rel="stylesheet" href="css/main_styles.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <h1>Adicionar Novo Sócio - Escola de Samba de Ovar</h1>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Sócio - Escola de Samba de Ovar</title>
-    <link rel="stylesheet" href="css/main_styles.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <h1>Editar Sócio</h1>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registo - Escola de Samba Juventude Vareira </title>
-    <link rel="stylesheet" href="css/main_styles.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <h1> Novo Registo</h1>
