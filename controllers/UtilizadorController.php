@@ -21,13 +21,20 @@ class UtilizadorController
         $erro = null;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            verificar_csrf();
             $data = [
-                'nome' => $_POST['nome'] ?? '',
-                'utilizador' => $_POST['utilizador'] ?? '',
+                'nome' => trim($_POST['nome'] ?? ''),
+                'utilizador' => trim($_POST['utilizador'] ?? ''),
                 'palavra_passe' => $_POST['palavra_passe'] ?? ''
             ];
 
-            if (!empty($data['nome']) && !empty($data['utilizador']) && !empty($data['palavra_passe'])) {
+            if (mb_strlen($data['nome']) < 2 || mb_strlen($data['nome']) > 100) {
+                $erro = 'Indique um nome entre 2 e 100 caracteres.';
+            } elseif (strlen($data['utilizador']) > 50 || (!filter_var($data['utilizador'], FILTER_VALIDATE_EMAIL) && !preg_match('/^[a-zA-Z0-9._-]{3,50}$/', $data['utilizador']))) {
+                $erro = 'Indique um e-mail válido ou um utilizador entre 3 e 50 caracteres.';
+            } elseif (strlen($data['palavra_passe']) < 8) {
+                $erro = 'A palavra-passe deve ter pelo menos 8 caracteres.';
+            } else {
                 if ($this->user->registo($data)) {
                     // Redirecionar para o login após registo bem-sucedido
                     header("Location: index.php?acao=login");
@@ -35,8 +42,6 @@ class UtilizadorController
                 } else {
                     $erro = "Erro ao efetuar o registo. O nome de utilizador poderá já estar a ser utilizado.";
                 }
-            } else {
-                $erro = "Por favor, preencha todos os campos obrigatórios.";
             }
         }
 
@@ -50,6 +55,7 @@ class UtilizadorController
         $erro = null;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            verificar_csrf();
             $utilizadorInput = $_POST['utilizador'] ?? '';
             $passwordInput = $_POST['palavra_passe'] ?? '';
 
@@ -58,6 +64,7 @@ class UtilizadorController
 
                 // Verificar se o utilizador existe e se a palavra-passe coincide com o hash
                 if ($userData && password_verify($passwordInput, $userData['palavra_passe'])) {
+                    session_regenerate_id(true);
                     // Guardar dados na sessão
                     $_SESSION['user_id'] = $userData['id'];
                     $_SESSION['user_nome'] = $userData['nome'];

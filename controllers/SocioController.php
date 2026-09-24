@@ -44,17 +44,22 @@ class SocioController
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Utiliza o número gerado automaticamente (ou o submetido pelo form)
-            $this->socio->numero_socio = $_POST['numero_socio'] ?? $proximoNumero;
-            $this->socio->nome_completo = $_POST['nome_completo'];
-            $this->socio->categoria = $_POST['categoria'];
-            $this->socio->contacto = $_POST['contacto'];
-            $this->socio->quota_regularizada = $_POST['quota_regularizada'];
+            verificar_csrf();
+            $dados = $this->validarDados($_POST);
 
-            if ($this->socio->criar()) {
-                header("Location: index.php?acao=listar");
-                exit();
+            if ($dados['erro']) {
+                $erro = $dados['erro'];
             } else {
+                $this->socio->numero_socio = $proximoNumero;
+                $this->socio->nome_completo = $dados['nome_completo'];
+                $this->socio->categoria = $dados['categoria'];
+                $this->socio->contacto = $dados['contacto'];
+                $this->socio->quota_regularizada = $dados['quota_regularizada'];
+
+                if ($this->socio->criar()) {
+                    header("Location: index.php?acao=listar");
+                    exit();
+                }
                 $erro = "Não foi possível criar o sócio. O número poderá já existir.";
             }
         }
@@ -72,19 +77,28 @@ class SocioController
             exit();
         }
 
-        $this->socio->lerPorId($id);
+        if (!$this->socio->lerPorId($id)) {
+            header("Location: index.php?acao=listar");
+            exit();
+        }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->socio->numero_socio = $_POST['numero_socio'];
-            $this->socio->nome_completo = $_POST['nome_completo'];
-            $this->socio->categoria = $_POST['categoria'];
-            $this->socio->contacto = $_POST['contacto'];
-            $this->socio->quota_regularizada = $_POST['quota_regularizada'];
+            verificar_csrf();
+            $dados = $this->validarDados($_POST, false);
 
-            if ($this->socio->atualizar()) {
-                header("Location: index.php?acao=listar");
-                exit();
+            if ($dados['erro']) {
+                $erro = $dados['erro'];
             } else {
+                $this->socio->numero_socio = trim($_POST['numero_socio'] ?? '');
+                $this->socio->nome_completo = $dados['nome_completo'];
+                $this->socio->categoria = $dados['categoria'];
+                $this->socio->contacto = $dados['contacto'];
+                $this->socio->quota_regularizada = $dados['quota_regularizada'];
+
+                if ($this->socio->atualizar()) {
+                    header("Location: index.php?acao=listar");
+                    exit();
+                }
                 $erro = "Não foi possível atualizar o sócio.";
             }
         }
@@ -95,7 +109,7 @@ class SocioController
     // Apagar sócio
     public function apagar()
     {
-        $id = $_GET['id'] ?? null;
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
         if ($id) {
             $this->socio->id = $id;
@@ -104,6 +118,40 @@ class SocioController
 
         header("Location: index.php?acao=listar");
         exit();
+    }
+
+    public function mudarStatus()
+    {
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $status = filter_input(INPUT_POST, 'status', FILTER_VALIDATE_INT);
+
+        if ($id && ($status === 0 || $status === 1)) {
+            $this->socio->id = $id;
+            $this->socio->alterarStatus($status);
+        }
+
+        header("Location: index.php?acao=listar");
+        exit();
+    }
+
+    private function validarDados(array $dados, bool $numeroObrigatorio = true): array
+    {
+        $nome = trim($dados['nome_completo'] ?? '');
+        $categoria = trim($dados['categoria'] ?? '');
+        $contacto = trim($dados['contacto'] ?? '');
+        $quota = filter_var($dados['quota_regularizada'] ?? null, FILTER_VALIDATE_INT);
+
+        if (($numeroObrigatorio && empty($dados['numero_socio'])) || $nome === '' || $categoria === '' || $contacto === '') {
+            return ['erro' => 'Preencha todos os campos obrigatórios.'];
+        }
+        if (mb_strlen($nome) > 150 || mb_strlen($categoria) > 50 || mb_strlen($contacto) > 20) {
+            return ['erro' => 'Verifique o tamanho dos campos preenchidos.'];
+        }
+        if ($quota !== 0 && $quota !== 1) {
+            return ['erro' => 'Estado das quotas inválido.'];
+        }
+
+        return ['erro' => null, 'nome_completo' => $nome, 'categoria' => $categoria, 'contacto' => $contacto, 'quota_regularizada' => $quota];
     }
 }
 

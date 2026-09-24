@@ -16,7 +16,7 @@
             <div>
                 <a href="index.php?acao=criar">Adicionar Sócio</a>
                 <a href="index.php?acao=registo">Registar Utilizador</a>
-                <a href="index.php?acao=login">Logout</a>
+                <a href="index.php?acao=logout">Logout</a>
             </div>
         </header>
 
@@ -26,10 +26,6 @@
             <?php if (isset($sucesso)): ?>
                 <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
             <?php endif; ?>
-
-            <div style="margin-bottom: 20px;">
-                <a class="btn btn-success" href="index.php?acao=criar">Adicionar Novo Sócio</a>
-            </div>
 
             <table class="table">
                 <thead>
@@ -52,11 +48,24 @@
                                 <td><?= htmlspecialchars($socio['categoria']) ?></td>
                                 <td><?= htmlspecialchars($socio['contacto']) ?></td>
                                 <td>
-                                    <?= ($socio['quota_regularizada'] == 1) ? '<span class="status status-ativo">Regularizada</span>' : '<span class="status status-inativo">Em Atraso</span>' ?>
+                                    <form action="index.php?acao=status" method="POST">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                                        <input type="hidden" name="id" value="<?= (int) $socio['id'] ?>">
+                                        <input type="hidden" name="status" value="<?= $socio['quota_regularizada'] == 1 ? 0 : 1 ?>">
+                                        <button class="status <?= $socio['quota_regularizada'] == 1 ? 'status-ativo' : 'status-inativo' ?>" type="submit">
+                                            <?= $socio['quota_regularizada'] == 1 ? 'Regularizada' : 'Em Atraso' ?>
+                                        </button>
+                                    </form>
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary" href="index.php?acao=editar&id=<?= $socio['id'] ?>">Editar</a>
-                                    <a class="btn btn-danger" href="index.php?acao=eliminar&id=<?= $socio['id'] ?>" onclick="return confirm('Tem a certeza que deseja eliminar este sócio?');">Eliminar</a>
+                                    <div class="table-actions">
+                                        <a class="btn btn-primary" href="index.php?acao=editar&id=<?= (int) $socio['id'] ?>">Editar</a>
+                                        <form class="inline-form" action="index.php?acao=eliminar" method="POST" onsubmit="return confirm('Tem a certeza que deseja eliminar este sócio?');">
+                                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                                            <input type="hidden" name="id" value="<?= (int) $socio['id'] ?>">
+                                            <button class="btn btn-danger" type="submit">Eliminar</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

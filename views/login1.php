@@ -18,6 +18,7 @@
         <?php endif; ?>
 
         <form action="index.php?acao=login" method="POST">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="form-group">
                 <label for="utilizador">Utilizador / E-mail:</label>
                 <input class="form-control" type="text" id="utilizador" name="utilizador" required>
@@ -29,7 +30,7 @@
             </div>
 
             <button class="btn btn-primary" type="submit">Entrar</button>
-            <a href="index.php?acao=registo">Ainda não tem conta? Registar</a>
+            <a class="form-link" href="index.php?acao=registo">Ainda não tem conta? Registar</a>
         </form>
     </main>
 

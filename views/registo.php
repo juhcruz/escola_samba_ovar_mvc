@@ -21,6 +21,7 @@
             <?php endif; ?>
 
             <form action="index.php?acao=registo" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="form-group">
                     <label>Nome Completo:</label>
                     <input type="text" name="nome" class="form-control" required>
@@ -28,12 +29,12 @@
 
                 <div class="form-group">
                     <label>E-mail:</label>
-                    <input type="text" name="utilizador" class="form-control" required>
+                    <input type="email" name="utilizador" class="form-control" autocomplete="username" maxlength="50" required>
                 </div>
 
                 <div class="form-group">
                     <label>Palavra-passe:</label>
-                    <input type="password" name="palavra_passe" class="form-control" required placeholder="Crie uma palavra-passe">
+                    <input type="password" name="palavra_passe" class="form-control" autocomplete="new-password" minlength="8" required placeholder="Crie uma palavra-passe">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Registar</button>

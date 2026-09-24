@@ -15,7 +15,7 @@
             <h1>Escola de Samba de Ovar</h1>
             <div>
                 <a href="index.php?acao=listar">Listar Sócios</a>
-                <a href="index.php?acao=login">Logout</a>
+                <a href="index.php?acao=logout">Logout</a>
             </div>
         </header>
 
@@ -27,6 +27,7 @@
             <?php endif; ?>
 
             <form action="index.php?acao=criar" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="form-group">
                     <label for="numero_socio">Número de Sócio</label>
                     <input class="form-control" id="numero_socio" type="text" name="numero_socio" value="<?= isset($proximoNumero) ? htmlspecialchars($proximoNumero) : '' ?>" readonly>

@@ -22,7 +22,7 @@ class Database
         try {
             if (extension_loaded('pdo_mysql')) {
                 $this->conn = new PDO(
-                    "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8",
+                    "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
                     $this->username,
                     $this->password
                 );
@@ -34,7 +34,9 @@ class Database
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             $this->initializeSchema();
         } catch (PDOException $exception) {
-            echo "Erro na ligação à base de dados: " . $exception->getMessage();
+            error_log($exception->getMessage());
+            http_response_code(503);
+            exit('O serviço está temporariamente indisponível.');
         }
 
         return $this->conn;

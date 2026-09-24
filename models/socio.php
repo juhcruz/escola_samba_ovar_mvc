@@ -107,6 +107,16 @@ class Socio
         }
         return false;
     }
+
+    public function alterarStatus($status)
+    {
+        $query = "UPDATE " . $this->table_name . " SET quota_regularizada = :status WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':status', $status, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }
 
 ?>
