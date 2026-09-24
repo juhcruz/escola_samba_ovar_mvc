@@ -2,11 +2,11 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Registo - Escola de Samba de Ovar</title>
+    <title>Registo - Escola de Samba Juventude Vareira </title>
     <link rel="stylesheet" href="css/main_styles.css">
 </head>
 <body>
-    <h1>Carnaval de Ovar - Novo Registo</h1>
+    <h1> Novo Registo</h1>
 
     <?php if (isset($erro)): ?>
         <p style="color: red;"><?= htmlspecialchars($erro) ?></p>
@@ -16,7 +16,7 @@
         <label>Nome Completo:</label><br>
         <input type="text" name="nome" required style="width: 30%;"><br><br>
 
-        <label>Utilizador / E-mail:</label><br>
+        <label>E-mail:</label><br>
         <input type="text" name="utilizador" required style="width: 30%;"><br><br>
 
         <label>Palavra-passe:</label><br>

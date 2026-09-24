@@ -2,109 +2,51 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Escola de Samba de Ovar - Gestão de Sócios</title>
+    <title>Lista de Sócios - Escola de Samba de Ovar</title>
     <link rel="stylesheet" href="css/main_styles.css">
 </head>
-
 <body>
+    <h1>Gestão de Sócios - Escola de Samba Juventude Vareira</h1>
+    
+    <div style="margin-bottom: 20px;">
+        <a href="index.php?acao=criar">Adicionar Novo Sócio</a> | 
+        <a href="index.php?acao=registo">Registar Utilizador</a>
+    </div>
 
-    <h1>Escola de Samba de Ovar - Gestão de Sócios</h1>
-
-    <a href="index.php?acao=criar">
-        <strong>+ Registar Novo Sócio</strong>
-    </a>
-
-    <br><br>
-
-    <table border="1" cellpadding="10" cellspacing="0" width="100%">
+    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Sócio / Contacto</th>
+            <tr style="background-color: #f2f2f2;">
+                <th>Nº Sócio</th>
+                <th>Nome Completo</th>
                 <th>Categoria</th>
+                <th>Contacto</th>
                 <th>Quotas</th>
                 <th>Ações</th>
             </tr>
         </thead>
-
         <tbody>
-
-        <?php foreach ($socios as $s): ?>
-
-            <tr>
-                <td>
-                    <?= htmlspecialchars($s['id']) ?>
-                </td>
-
-                <td>
-                    <strong>
-                        Nº <?= htmlspecialchars($s['numero_socio']) ?> - <?= htmlspecialchars($s['nome_completo']) ?>
-                    </strong>
-
-                    <p style="font-size: 0.9em; color: #555;">
-                        Contacto: <?= htmlspecialchars($s['contacto']) ?>
-                    </p>
-                </td>
-
-                <td>
-                    <?= htmlspecialchars($s['categoria']) ?>
-                </td>
-
-                <td>
-                    <?php if ($s['quota_regularizada'] == 1): ?>
-                        <span style="color:green;">Regularizado</span>
-                    <?php else: ?>
-                        <span style="color:red;">Em Dívida</span>
-                    <?php endif; ?>
-                </td>
-
-                <td>
-                    <a href="index.php?acao=editar&id=<?= (int)$s['id'] ?>">
-                        Editar
-                    </a>
-
-                    |
-
-                    <?php if ($s['quota_regularizada'] == 1): ?>
-
-                        <a
-                            href="index.php?acao=status&id=<?= (int)$s['id'] ?>&status=0"
-                            onclick="return confirm('Deseja marcar as quotas como em dívida?')"
-                        >
-                            Marcar Dívida
-                        </a>
-
-                    <?php else: ?>
-
-                        <a
-                            href="index.php?acao=status&id=<?= (int)$s['id'] ?>&status=1"
-                        >
-                            Regularizar
-                        </a>
-
-                    <?php endif; ?>
-
-                    |
-
-                    <a
-                        href="index.php?acao=eliminar&id=<?= (int)$s['id'] ?>"
-                        onclick="return confirm('Deseja eliminar este sócio?')"
-                    >
-                        Eliminar
-                    </a>
-                </td>
-            </tr>
-
-        <?php endforeach; ?>
-
-        <?php if (empty($socios)): ?>
-            <tr>
-                <td colspan="5" style="text-align: center;">Nenhum sócio registado.</td>
-            </tr>
-        <?php endif; ?>
-
+            <?php if (!empty($socios)): ?>
+                <?php foreach ($socios as $socio): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($socio['numero_socio']) ?></td>
+                        <td><?= htmlspecialchars($socio['nome_completo']) ?></td>
+                        <td><?= htmlspecialchars($socio['categoria']) ?></td>
+                        <td><?= htmlspecialchars($socio['contacto']) ?></td>
+                        <td>
+                            <?= ($socio['quota_regularizada'] == 1) ? '<span style="color: green;">Regularizada</span>' : '<span style="color: red;">Em Atraso</span>' ?>
+                        </td>
+                        <td>
+                            <a href="index.php?acao=editar&id=<?= $socio['id'] ?>">Editar</a> | 
+                            <a href="index.php?acao=eliminar&id=<?= $socio['id'] ?>" onclick="return confirm('Tem a certeza que deseja eliminar este sócio?');">Eliminar</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6" style="text-align: center;">Nenhum sócio registado até o momento.</td>
+                </tr>
+            <?php endif; ?>
         </tbody>
     </table>
-
 </body>
 </html>

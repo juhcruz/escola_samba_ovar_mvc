@@ -20,40 +20,39 @@ class Socio
     // Listar todos os sócios
     public function lerTodos()
     {
-        $query = "SELECT * FROM " . $this->table_name . " ORDER BY created_at DESC";
-
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY id DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-
         return $stmt;
     }
 
-    // Inserir sócio
-    public function inserir()
+    // Criar um novo sócio
+    public function criar()
     {
-        $query = "INSERT INTO " . $this->table_name .
-                 " (numero_socio, nome_completo, categoria, contacto, quota_regularizada)
+        $query = "INSERT INTO " . $this->table_name . " (numero_socio, nome_completo, categoria, contacto, quota_regularizada) 
                   VALUES (:numero_socio, :nome_completo, :categoria, :contacto, :quota_regularizada)";
-
+        
         $stmt = $this->conn->prepare($query);
 
+        // Limpar e vincular dados
         $stmt->bindParam(":numero_socio", $this->numero_socio);
         $stmt->bindParam(":nome_completo", $this->nome_completo);
         $stmt->bindParam(":categoria", $this->categoria);
         $stmt->bindParam(":contacto", $this->contacto);
-        $stmt->bindParam(":quota_regularizada", $this->quota_regularizada, PDO::PARAM_INT);
+        $stmt->bindParam(":quota_regularizada", $this->quota_regularizada);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
 
-    // Buscar sócio pelo ID
-    public function lerPorId()
+    // Ler dados de um sócio específico pelo ID (usado na edição)
+    public function lerPorId($id)
     {
-        $query = "SELECT * FROM " . $this->table_name .
-                 " WHERE id = :id LIMIT 1";
-
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
+        $stmt->bindParam(1, $id);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -65,22 +64,20 @@ class Socio
             $this->categoria = $row['categoria'];
             $this->contacto = $row['contacto'];
             $this->quota_regularizada = $row['quota_regularizada'];
-
             return true;
         }
-
         return false;
     }
 
-    // Atualizar sócio
+    // Atualizar dados de um sócio
     public function atualizar()
     {
-        $query = "UPDATE " . $this->table_name . "
-                  SET numero_socio = :numero_socio,
-                      nome_completo = :nome_completo,
-                      categoria = :categoria,
-                      contacto = :contacto,
-                      quota_regularizada = :quota_regularizada
+        $query = "UPDATE " . $this->table_name . " 
+                  SET numero_socio = :numero_socio, 
+                      nome_completo = :nome_completo, 
+                      categoria = :categoria, 
+                      contacto = :contacto, 
+                      quota_regularizada = :quota_regularizada 
                   WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
@@ -89,37 +86,26 @@ class Socio
         $stmt->bindParam(":nome_completo", $this->nome_completo);
         $stmt->bindParam(":categoria", $this->categoria);
         $stmt->bindParam(":contacto", $this->contacto);
-        $stmt->bindParam(":quota_regularizada", $this->quota_regularizada, PDO::PARAM_INT);
-        $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
+        $stmt->bindParam(":quota_regularizada", $this->quota_regularizada);
+        $stmt->bindParam(":id", $this->id);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
 
-    // Alterar estado das quotas
-    public function alterarStatus($status)
+    // Apagar um sócio
+    public function apagar()
     {
-        $query = "UPDATE " . $this->table_name . "
-                  SET quota_regularizada = :status
-                  WHERE id = :id";
-
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
 
-        $stmt->bindParam(":status", $status, PDO::PARAM_INT);
-        $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
-
-        return $stmt->execute();
-    }
-
-    // Eliminar sócio
-    public function eliminar()
-    {
-        $query = "DELETE FROM " . $this->table_name .
-                 " WHERE id = :id";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
-
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
 }
 

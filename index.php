@@ -1,55 +1,58 @@
 <?php
-// Iniciar a ligação à base de dados e carregar controllers
-require_once 'config/Database.php';
-require_once 'controllers/AuthController.php';
+// index.php - Ponto de Entrada / Router Principal
+
+// Iniciar sessão para gerir autenticações se necessário
+session_start();
+
+// Incluir os controladores necessários
 require_once 'controllers/SocioController.php';
+require_once 'controllers/UtilizadorController.php';
 
-$database = new Database();
-$db = $database->getConnection();
+// Instanciar os controladores
+$socioController = new SocioController();
+$utilizadorController = new UtilizadorController();
 
-$authController = new AuthController($db);
-$socioController = new SocioController($db);
+// Obter a ação vinda do URL (se não for especificada, assume 'listar' por defeito)
+$acao = $_GET['acao'] ?? 'listar';
 
-
-$acao = $_GET['acao'] ?? $_GET['action'] ?? 'login';
-
+// Estrutura de decisão (Router) para direcionar cada pedido
 switch ($acao) {
-    
-    case 'login':
-        $authController->login();
-        break;
-
-    case 'registo':
-        $authController->registo();
-        break;
-
-    case 'logout':
-        $authController->logout();
-        break;
-
-    
+    // Gestão de Sócios
     case 'listar':
-    case 'listar_socios':
-        $socioController->listar(); // 
+        $socioController->listar();
         break;
-
+        
     case 'criar':
-    case 'criar_socio':
         $socioController->criar();
         break;
-
+        
     case 'editar':
-    case 'editar_socio':
         $socioController->editar();
         break;
-
+        
+    case 'status':
+        $socioController->mudarStatus();
+        break;
+        
     case 'eliminar':
-    case 'apagar_socio':
+    case 'apagar':
         $socioController->apagar();
         break;
 
+    // Gestão de Utilizadores / Autenticação
+    case 'registo':
+        $utilizadorController->registo();
+        break;
+        
+    case 'login':
+        // Caso já tenha o método de login implementado no Controller, chame-o aqui.
+        // Se quiser apenas carregar a vista de login por enquanto:
+        include 'views/login.php';
+        break;
+        
     default:
-        $authController->login();
+        echo "<h2 style='color: red; text-align: center; margin-top: 50px;'>Erro 404: Ação não encontrada no sistema.</h2>";
+        echo "<p style='text-align: center;'><a href='index.php'>Voltar ao início</a></p>";
         break;
 }
 ?>
