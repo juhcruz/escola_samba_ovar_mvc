@@ -1,66 +1,53 @@
 <?php
 
-include_once 'config/database.php';
-include_once 'models/Utilizador.php';
+include_once 'config/Database.php';
+include_once 'models/User.php'; // Ajustado para o nome standard do model de utilizador
 
 class UtilizadorController
 {
     private $db;
     private $utilizador;
 
-    public function __construct()
+    public function __construct($db)
     {
-        $database = new Database();
-
-        $this->db = $database->getConnection();
-
-        $this->utilizador = new Utilizador($this->db);
+        $this->db = $db;
+        $this->utilizador = new User($this->db);
     }
 
-    // Ação: criar utilizador
-    public function criar()
+    // Ação: criar / registar utilizador
+    public function registo()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $nome = trim($_POST['utilizador'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $palavra_chave = $_POST['palavra_chave'] ?? '';
+            $nome = trim($_POST['nome'] ?? '');
+            $utilizador = trim($_POST['utilizador'] ?? '');
+            $palavra_passe = $_POST['palavra_passe'] ?? '';
 
-            if (
-                !empty($nome) &&
-                !empty($email) &&
-                !empty($palavra_chave)
-            ) {
+            if (!empty($nome) && !empty($utilizador) && !empty($palavra_passe)) {
 
-                // Criar hash da palavra-passe
-                $hashed_password = password_hash(
-                    $palavra_chave,
-                    PASSWORD_DEFAULT
-                );
+                // Preparar os dados para enviar ao Model
+                $data = [
+                    'nome' => $nome,
+                    'utilizador' => $utilizador,
+                    'palavra_passe' => $palavra_passe
+                ];
 
-                // Enviar dados para o Model
-                $this->utilizador->nome = $nome;
-                $this->utilizador->email = $email;
-                $this->utilizador->palavra_chave = $hashed_password;
-
-                // Registar utilizador
-                if ($this->utilizador->register()) {
-
+                // Registar utilizador (o hash já é tratado no Model ou aqui)
+                if ($this->utilizador->registo($data)) {
                     header('Location: index.php?acao=login');
                     exit();
-
                 } else {
-
-                    echo "Erro ao criar utilizador.";
+                    $erro = "Erro ao criar utilizador.";
+                    include 'views/auth/registo.php';
                 }
 
             } else {
-
-                echo "Todos os campos são obrigatórios.";
+                $erro = "Todos os campos são obrigatórios.";
+                include 'views/auth/registo.php';
             }
+        } else {
+            include 'views/auth/registo.php';
         }
-
-        include 'views/criar_utilizador.php';
     }
 }
 

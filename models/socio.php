@@ -1,24 +1,26 @@
 <?php
 
-class Noticia
+class Socio
 {
     private $conn;
-    private $table_name = "noticias";
+    private $table_name = "socios";
 
     public $id;
-    public $titulo;
-    public $conteudo;
-    public $ativo;
+    public $numero_socio;
+    public $nome_completo;
+    public $categoria;
+    public $contacto;
+    public $quota_regularizada;
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    // Listar todas as notícias
+    // Listar todos os sócios
     public function lerTodos()
     {
-        $query = "SELECT * FROM " . $this->table_name . " ORDER BY criado_em DESC";
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY created_at DESC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -26,40 +28,43 @@ class Noticia
         return $stmt;
     }
 
-    // Inserir notícia
+    // Inserir sócio
     public function inserir()
     {
         $query = "INSERT INTO " . $this->table_name .
-                 " (titulo, conteudo, ativo)
-                  VALUES (:titulo, :conteudo, 1)";
+                 " (numero_socio, nome_completo, categoria, contacto, quota_regularizada)
+                  VALUES (:numero_socio, :nome_completo, :categoria, :contacto, :quota_regularizada)";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(":titulo", $this->titulo);
-        $stmt->bindParam(":conteudo", $this->conteudo);
+        $stmt->bindParam(":numero_socio", $this->numero_socio);
+        $stmt->bindParam(":nome_completo", $this->nome_completo);
+        $stmt->bindParam(":categoria", $this->categoria);
+        $stmt->bindParam(":contacto", $this->contacto);
+        $stmt->bindParam(":quota_regularizada", $this->quota_regularizada, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
 
-    // Buscar notícia pelo ID
+    // Buscar sócio pelo ID
     public function lerPorId()
     {
         $query = "SELECT * FROM " . $this->table_name .
                  " WHERE id = :id LIMIT 1";
 
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
-
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
             $this->id = $row['id'];
-            $this->titulo = $row['titulo'];
-            $this->conteudo = $row['conteudo'];
-            $this->ativo = $row['ativo'];
+            $this->numero_socio = $row['numero_socio'];
+            $this->nome_completo = $row['nome_completo'];
+            $this->categoria = $row['categoria'];
+            $this->contacto = $row['contacto'];
+            $this->quota_regularizada = $row['quota_regularizada'];
 
             return true;
         }
@@ -67,46 +72,51 @@ class Noticia
         return false;
     }
 
-    // Atualizar notícia
+    // Atualizar sócio
     public function atualizar()
     {
         $query = "UPDATE " . $this->table_name . "
-                  SET titulo = :titulo,
-                      conteudo = :conteudo
+                  SET numero_socio = :numero_socio,
+                      nome_completo = :nome_completo,
+                      categoria = :categoria,
+                      contacto = :contacto,
+                      quota_regularizada = :quota_regularizada
                   WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(":titulo", $this->titulo);
-        $stmt->bindParam(":conteudo", $this->conteudo);
+        $stmt->bindParam(":numero_socio", $this->numero_socio);
+        $stmt->bindParam(":nome_completo", $this->nome_completo);
+        $stmt->bindParam(":categoria", $this->categoria);
+        $stmt->bindParam(":contacto", $this->contacto);
+        $stmt->bindParam(":quota_regularizada", $this->quota_regularizada, PDO::PARAM_INT);
         $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
 
-    // Alterar estado da notícia
+    // Alterar estado das quotas
     public function alterarStatus($status)
     {
         $query = "UPDATE " . $this->table_name . "
-                  SET ativo = :ativo
+                  SET quota_regularizada = :status
                   WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(":ativo", $status, PDO::PARAM_INT);
+        $stmt->bindParam(":status", $status, PDO::PARAM_INT);
         $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
 
-    // Eliminar notícia
+    // Eliminar sócio
     public function eliminar()
     {
         $query = "DELETE FROM " . $this->table_name .
                  " WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
 
         return $stmt->execute();
