@@ -17,13 +17,56 @@ class Socio
         $this->conn = $db;
     }
 
-    // Listar todos os sócios
-    public function lerTodos()
+    // Listar sócios com pesquisa e filtros opcionais.
+    public function lerTodos(string $pesquisa = '', string $categoria = '', ?int $quota = null)
     {
-        $query = "SELECT * FROM " . $this->table_name . " ORDER BY id DESC";
+        $conditions = [];
+        $parameters = [];
+
+        if ($pesquisa !== '') {
+            $conditions[] = '(numero_socio LIKE :pesquisa OR nome_completo LIKE :pesquisa OR contacto LIKE :pesquisa)';
+            $parameters[':pesquisa'] = '%' . $pesquisa . '%';
+        }
+        if ($categoria !== '') {
+            $conditions[] = 'categoria = :categoria';
+            $parameters[':categoria'] = $categoria;
+        }
+        if ($quota !== null) {
+            $conditions[] = 'quota_regularizada = :quota';
+            $parameters[':quota'] = $quota;
+        }
+
+        $query = "SELECT * FROM " . $this->table_name;
+        if ($conditions) {
+            $query .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+        $query .= ' ORDER BY id DESC';
+
         $stmt = $this->conn->prepare($query);
+        foreach ($parameters as $parameter => $value) {
+            $stmt->bindValue($parameter, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+        }
         $stmt->execute();
         return $stmt;
+    }
+
+    public function obterEstatisticas(): array
+    {
+        $query = "SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN quota_regularizada = 1 THEN 1 ELSE 0 END), 0) AS regularizadas FROM " . $this->table_name;
+        $stmt = $this->conn->query($query);
+        $estatisticas = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'total' => (int) $estatisticas['total'],
+            'regularizadas' => (int) $estatisticas['regularizadas'],
+            'atraso' => (int) $estatisticas['total'] - (int) $estatisticas['regularizadas']
+        ];
+    }
+
+    public function obterCategorias(): array
+    {
+        $query = "SELECT DISTINCT categoria FROM " . $this->table_name . " WHERE categoria <> '' ORDER BY categoria";
+        return $this->conn->query($query)->fetchAll(PDO::FETCH_COLUMN);
     }
 
     // Criar um novo sócio

@@ -18,8 +18,15 @@ class SocioController
     // Listar todos os sócios
     public function listar()
     {
-        $stmt = $this->socio->lerTodos();
+        $pesquisa = trim($_GET['pesquisa'] ?? '');
+        $categoria = trim($_GET['categoria'] ?? '');
+        $quotaFiltro = $_GET['quota'] ?? '';
+        $quota = in_array($quotaFiltro, ['0', '1'], true) ? (int) $quotaFiltro : null;
+
+        $stmt = $this->socio->lerTodos($pesquisa, $categoria, $quota);
         $socios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $estatisticas = $this->socio->obterEstatisticas();
+        $categorias = $this->socio->obterCategorias();
 
         // Incluir a vista de listagem
         include 'views/listar.php';

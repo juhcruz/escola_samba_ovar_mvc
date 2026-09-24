@@ -27,6 +27,52 @@
                 <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
             <?php endif; ?>
 
+            <section class="cards" aria-label="Resumo dos sócios">
+                <article class="card">
+                    <h3>Total de sócios</h3>
+                    <p class="number"><?= $estatisticas['total'] ?></p>
+                </article>
+                <article class="card">
+                    <h3>Quotas regularizadas</h3>
+                    <p class="number"><?= $estatisticas['regularizadas'] ?></p>
+                </article>
+                <article class="card">
+                    <h3>Quotas em atraso</h3>
+                    <p class="number"><?= $estatisticas['atraso'] ?></p>
+                </article>
+            </section>
+
+            <form class="filter-bar" action="index.php" method="GET">
+                <input type="hidden" name="acao" value="listar">
+                <div class="filter-field">
+                    <label for="pesquisa">Pesquisar</label>
+                    <input class="form-control" id="pesquisa" type="search" name="pesquisa" value="<?= htmlspecialchars($pesquisa, ENT_QUOTES, 'UTF-8') ?>" placeholder="Nome, número ou contacto">
+                </div>
+                <div class="filter-field">
+                    <label for="categoria-filtro">Categoria</label>
+                    <select class="form-control" id="categoria-filtro" name="categoria">
+                        <option value="">Todas</option>
+                        <?php foreach ($categorias as $opcaoCategoria): ?>
+                            <option value="<?= htmlspecialchars($opcaoCategoria, ENT_QUOTES, 'UTF-8') ?>" <?= $categoria === $opcaoCategoria ? 'selected' : '' ?>><?= htmlspecialchars($opcaoCategoria) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="quota-filtro">Estado das quotas</label>
+                    <select class="form-control" id="quota-filtro" name="quota">
+                        <option value="">Todos</option>
+                        <option value="1" <?= $quotaFiltro === '1' ? 'selected' : '' ?>>Regularizadas</option>
+                        <option value="0" <?= $quotaFiltro === '0' ? 'selected' : '' ?>>Em atraso</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-primary" type="submit">Filtrar</button>
+                    <a class="btn btn-secondary" href="index.php?acao=listar">Limpar</a>
+                </div>
+            </form>
+
+            <p class="results-summary"><?= count($socios) ?> resultado(s) apresentado(s)</p>
+
             <table class="table">
                 <thead>
                     <tr>
