@@ -18,8 +18,8 @@ class User
     // Registar novo utilizador na base de dados
     public function registo($data)
     {
-        $query = "INSERT INTO " . $this->table_name . " (nome, utilizador, palavra_passe) 
-                  VALUES (:nome, :utilizador, :palavra_passe)";
+        $query = "INSERT INTO " . $this->table_name . " (nome, utilizador, palavra_passe, role)
+                  VALUES (:nome, :utilizador, :palavra_passe, 'user')";
         
         $stmt = $this->conn->prepare($query);
 
@@ -47,6 +47,102 @@ class User
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function listarTodos()
+    {
+        $query = "SELECT id, nome, utilizador, role, created_at FROM " . $this->table_name . " ORDER BY id";
+        return $this->conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function papelPorId(int $id): ?string
+    {
+        $stmt = $this->conn->prepare("SELECT role FROM " . $this->table_name . " WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $papel = $stmt->fetchColumn();
+
+        return in_array($papel, ['admin', 'user'], true) ? $papel : null;
+    }
+
+    public function atualizarPapel(int $id, string $papel): bool
+    {
+        if (!in_array($papel, ['admin', 'user'], true)) {
+            return false;
+        }
+
+        $this->conn->beginTransaction();
+        try {
+            $this->bloquearUtilizadores($id);
+            $stmt = $this->conn->prepare("SELECT role FROM " . $this->table_name . " WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            $papelAtual = $stmt->fetchColumn();
+            if ($papelAtual === false) {
+                $this->conn->rollBack();
+                return false;
+            }
+
+            if ($papelAtual === 'admin' && $papel === 'user') {
+                $stmt = $this->conn->query("SELECT COUNT(*) FROM " . $this->table_name . " WHERE role = 'admin'");
+                if ((int) $stmt->fetchColumn() <= 1) {
+                    $this->conn->rollBack();
+                    return false;
+                }
+            }
+
+            $stmt = $this->conn->prepare("UPDATE " . $this->table_name . " SET role = :role WHERE id = :id");
+            $sucesso = $stmt->execute([':role' => $papel, ':id' => $id]);
+            $this->conn->commit();
+            return $sucesso;
+        } catch (Throwable $exception) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            throw $exception;
+        }
+    }
+
+    public function apagar(int $id): bool
+    {
+        $this->conn->beginTransaction();
+        try {
+            $this->bloquearUtilizadores($id);
+            $stmt = $this->conn->prepare("SELECT role FROM " . $this->table_name . " WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            $papel = $stmt->fetchColumn();
+            if ($papel === false) {
+                $this->conn->rollBack();
+                return false;
+            }
+
+            if ($papel === 'admin') {
+                $stmt = $this->conn->query("SELECT COUNT(*) FROM " . $this->table_name . " WHERE role = 'admin'");
+                if ((int) $stmt->fetchColumn() <= 1) {
+                    $this->conn->rollBack();
+                    return false;
+                }
+            }
+
+            $stmt = $this->conn->prepare("DELETE FROM " . $this->table_name . " WHERE id = :id");
+            $sucesso = $stmt->execute([':id' => $id]);
+            $this->conn->commit();
+            return $sucesso;
+        } catch (Throwable $exception) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            throw $exception;
+        }
+    }
+
+    private function bloquearUtilizadores(int $id): void
+    {
+        if ($this->conn->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+            $this->conn->query("SELECT id FROM " . $this->table_name . " FOR UPDATE")->fetchAll(PDO::FETCH_COLUMN);
+            return;
+        }
+
+        $stmt = $this->conn->prepare("UPDATE " . $this->table_name . " SET role = role WHERE id = :id");
+        $stmt->execute([':id' => $id]);
     }
 }
 

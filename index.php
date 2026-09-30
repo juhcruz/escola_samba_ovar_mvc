@@ -47,8 +47,24 @@ function exigir_autenticacao(): void
     }
 }
 
+function exigir_admin(): void
+{
+    if (($_SESSION['user_role'] ?? '') !== 'admin') {
+        http_response_code(403);
+        exit('Acesso reservado ao administrador.');
+    }
+}
+
 if (!in_array($acao, ['login', 'registo', 'logout'], true)) {
     exigir_autenticacao();
+    $papelAtual = $utilizadorController->papelPorId((int) $_SESSION['user_id']);
+    if ($papelAtual === null) {
+        session_unset();
+        session_destroy();
+        header('Location: index.php?acao=login');
+        exit();
+    }
+    $_SESSION['user_role'] = $papelAtual;
 }
 
 // Estrutura de decisão (Router) para direcionar cada pedido
@@ -96,6 +112,31 @@ switch ($acao) {
 
     case 'logout':
         $utilizadorController->logout();
+        break;
+
+    case 'utilizadores':
+        exigir_admin();
+        $utilizadorController->listarUtilizadores();
+        break;
+
+    case 'papel-utilizador':
+        exigir_admin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit('Método não permitido.');
+        }
+        verificar_csrf();
+        $utilizadorController->atualizarPapel();
+        break;
+
+    case 'apagar-utilizador':
+        exigir_admin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit('Método não permitido.');
+        }
+        verificar_csrf();
+        $utilizadorController->apagarUtilizador();
         break;
         
     default:

@@ -16,6 +16,9 @@
             <div>
                 <a href="index.php?acao=criar">Adicionar Sócio</a>
                 <a href="index.php?acao=registo">Registar Utilizador</a>
+                <?php if (($_SESSION['user_role'] ?? '') === 'admin'): ?>
+                    <a href="index.php?acao=utilizadores">Gerir Utilizadores</a>
+                <?php endif; ?>
                 <a href="index.php?acao=logout">Logout</a>
             </div>
         </header>

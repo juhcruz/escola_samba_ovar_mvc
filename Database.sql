@@ -48,6 +48,7 @@ CREATE TABLE `users` (
   `nome` varchar(100) NOT NULL,
   `utilizador` varchar(50) NOT NULL,
   `palavra_passe` varchar(255) NOT NULL,
+  `role` varchar(20) NOT NULL DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

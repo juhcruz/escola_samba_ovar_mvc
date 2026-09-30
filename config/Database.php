@@ -44,27 +44,59 @@ class Database
 
     private function initializeSchema()
     {
-        $this->conn->exec("
-            CREATE TABLE IF NOT EXISTS socios (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                numero_socio VARCHAR(20) NOT NULL UNIQUE,
-                nome_completo VARCHAR(150) NOT NULL,
-                categoria VARCHAR(50) NOT NULL,
-                contacto VARCHAR(20) NOT NULL,
-                quota_regularizada INTEGER DEFAULT 1,
-                created_at TEXT DEFAULT CURRENT_TIMESTAMP
-            );
-        ");
+        if ($this->conn->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+            $this->conn->exec("
+                CREATE TABLE IF NOT EXISTS socios (
+                    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    numero_socio VARCHAR(20) NOT NULL UNIQUE,
+                    nome_completo VARCHAR(150) NOT NULL,
+                    categoria VARCHAR(50) NOT NULL,
+                    contacto VARCHAR(20) NOT NULL,
+                    quota_regularizada TINYINT(1) DEFAULT 1,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            ");
 
-        $this->conn->exec("
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome VARCHAR(100) NOT NULL,
-                utilizador VARCHAR(50) NOT NULL UNIQUE,
-                palavra_passe VARCHAR(255) NOT NULL,
-                created_at TEXT DEFAULT CURRENT_TIMESTAMP
-            );
-        ");
+            $this->conn->exec("
+                CREATE TABLE IF NOT EXISTS users (
+                    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    nome VARCHAR(100) NOT NULL,
+                    utilizador VARCHAR(50) NOT NULL UNIQUE,
+                    palavra_passe VARCHAR(255) NOT NULL,
+                    role VARCHAR(20) NOT NULL DEFAULT 'user',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            ");
+        } else {
+            $this->conn->exec("
+                CREATE TABLE IF NOT EXISTS socios (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    numero_socio VARCHAR(20) NOT NULL UNIQUE,
+                    nome_completo VARCHAR(150) NOT NULL,
+                    categoria VARCHAR(50) NOT NULL,
+                    contacto VARCHAR(20) NOT NULL,
+                    quota_regularizada INTEGER DEFAULT 1,
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+                );
+            ");
+
+            $this->conn->exec("
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome VARCHAR(100) NOT NULL,
+                    utilizador VARCHAR(50) NOT NULL UNIQUE,
+                    palavra_passe VARCHAR(255) NOT NULL,
+                    role VARCHAR(20) NOT NULL DEFAULT 'user',
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+                );
+            ");
+        }
+
+        try {
+            $this->conn->query('SELECT role FROM users LIMIT 0');
+        } catch (PDOException $exception) {
+            $this->conn->exec("ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'user'");
+        }
     }
 }
 

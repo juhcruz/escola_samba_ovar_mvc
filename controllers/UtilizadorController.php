@@ -69,6 +69,7 @@ class UtilizadorController
                     $_SESSION['user_id'] = $userData['id'];
                     $_SESSION['user_nome'] = $userData['nome'];
                     $_SESSION['user_utilizador'] = $userData['utilizador'];
+                    $_SESSION['user_role'] = $userData['role'] ?? 'user';
 
                     // Redirecionar para a listagem principal de sócios
                     header("Location: index.php?acao=listar");
@@ -83,6 +84,37 @@ class UtilizadorController
 
         // Carregar a vista de login
         include 'views/login1.php';
+    }
+
+    public function listarUtilizadores()
+    {
+        $utilizadores = $this->user->listarTodos();
+        include 'views/utilizadores.php';
+    }
+
+    public function papelPorId(int $id): ?string
+    {
+        return $this->user->papelPorId($id);
+    }
+
+    public function atualizarPapel()
+    {
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $papel = $_POST['papel'] ?? '';
+        $sucesso = $id && $id !== (int) $_SESSION['user_id']
+            && $this->user->atualizarPapel($id, $papel);
+
+        header('Location: index.php?acao=utilizadores&resultado=' . ($sucesso ? 'atualizado' : 'erro'));
+        exit();
+    }
+
+    public function apagarUtilizador()
+    {
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $sucesso = $id && $id !== (int) $_SESSION['user_id'] && $this->user->apagar($id);
+
+        header('Location: index.php?acao=utilizadores&resultado=' . ($sucesso ? 'removido' : 'erro'));
+        exit();
     }
 
     // Terminar sessão (Logout)
