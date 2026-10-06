@@ -11,6 +11,9 @@
 </head>
 <body class="login-page">
     <main class="login-container">
+        <div class="login-logo-wrap">
+            <img class="login-logo" src="../images/logo.jpeg" alt="Logo da Escola de Samba de Ovar">
+        </div>
         <h2>Carnaval de Ovar - Autenticação</h2>
 
         <?php if (isset($erro)): ?>
