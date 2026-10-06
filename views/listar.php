@@ -12,7 +12,10 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>Escola de Samba de Ovar</h1>
+            <div class="header-brand">
+                <img class="header-logo" src="../images/logo.jpeg" alt="Logo da Escola de Samba de Ovar">
+                <h1>Escola de Samba de Ovar</h1>
+            </div>
             <div>
                 <?php if (($_SESSION['user_role'] ?? '') === 'admin'): ?>
                     <a href="index.php?acao=criar">Adicionar Sócio</a>
