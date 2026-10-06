@@ -75,14 +75,17 @@ switch ($acao) {
         break;
         
     case 'criar':
+        exigir_admin();
         $socioController->criar();
         break;
         
     case 'editar':
+        exigir_admin();
         $socioController->editar();
         break;
         
     case 'status':
+        exigir_admin();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             exit('Método não permitido.');
@@ -93,6 +96,7 @@ switch ($acao) {
         
     case 'eliminar':
     case 'apagar':
+        exigir_admin();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             exit('Método não permitido.');

@@ -21,7 +21,7 @@ php -S localhost:8000 -t .
 
 Quando o driver `pdo_mysql` não estiver disponível, a aplicação usa automaticamente `database.sqlite` e cria as tabelas necessárias. Para MySQL, crie a base de dados `escola_samba_ovar_mvc` e ajuste as credenciais em `config/Database.php`.
 
-As contas novas são utilizadores normais. Para dar acesso de administrador, atualize manualmente o papel da conta na base de dados e inicie sessão novamente:
+As contas novas são utilizadores normais: podem consultar a lista de sócios, mas não podem criar, editar, apagar sócios ou alterar quotas, nem gerir utilizadores. Para dar acesso de administrador à primeira conta, atualize manualmente o papel da conta na base de dados e inicie sessão novamente:
 
 ```sql
 UPDATE users SET role = 'admin' WHERE utilizador = 'email@exemplo.pt';
