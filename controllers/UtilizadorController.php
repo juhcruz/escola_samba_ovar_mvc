@@ -36,6 +36,14 @@ class UtilizadorController
                 $erro = 'A palavra-passe deve ter pelo menos 8 caracteres.';
             } else {
                 if ($this->user->registo($data)) {
+                    unset(
+                        $_SESSION['user_id'],
+                        $_SESSION['user_nome'],
+                        $_SESSION['user_utilizador'],
+                        $_SESSION['user_role']
+                    );
+                    session_regenerate_id(true);
+
                     // Redirecionar para o login após registo bem-sucedido
                     header("Location: index.php?acao=login");
                     exit();
