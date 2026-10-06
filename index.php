@@ -1,5 +1,6 @@
 <?php
 // index.php - Ponto de Entrada / Router Principal
+// oi
 
 // Iniciar sessão com opções seguras para autenticação e CSRF.
 session_set_cookie_params([
