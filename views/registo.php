@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Registo - Escola de Samba Juventude Vareira </title>
+    <title>Registo - Escola de Samba Juventude Vareira</title>
     <?php
     $scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
     $cssPath = str_contains($scriptPath, '/views/') ? '../css/main.css' : 'css/main.css';

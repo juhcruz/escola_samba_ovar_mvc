@@ -1,6 +1,6 @@
-# Escola de Samba de Ovar
+# Escola de Samba Juventude Vareira
 
-Aplicação MVC simples para gerir sócios, quotas e utilizadores da Escola de Samba de Ovar.
+Aplicação MVC simples para gerir sócios, quotas e utilizadores da Escola de Samba Juventude Vareira.
 
 ## Requisitos
 

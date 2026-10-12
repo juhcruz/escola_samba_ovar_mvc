@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Escola de Samba de Ovar</title>
+    <title>Login - Escola de Samba Juventude Vareira</title>
     <?php
     $scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
     $cssPath = str_contains($scriptPath, '/views/') ? '../css/main.css' : 'css/main.css';
@@ -12,7 +12,7 @@
 <body class="login-page">
     <main class="login-container">
         <div class="login-logo-wrap">
-            <img class="login-logo" src="../images/logo.jpeg" alt="Logo da Escola de Samba de Ovar">
+            <img class="login-logo" src="../images/logo.jpeg" alt="Logo da Escola de Samba Juventude Vareira">
         </div>
         <h2>Carnaval de Ovar - Autenticação</h2>
 

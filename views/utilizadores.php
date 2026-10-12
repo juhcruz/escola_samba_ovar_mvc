@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Gestão de Utilizadores - Escola de Samba de Ovar</title>
+    <title>Gestão de Utilizadores - Escola de Samba Juventude Vareira</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
