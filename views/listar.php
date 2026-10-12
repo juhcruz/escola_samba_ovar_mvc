@@ -11,20 +11,7 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <div class="header-brand">
-                <img class="header-logo" src="../images/logo.jpeg" alt="Logo da Escola de Samba de Ovar">
-                <h1>Escola de Samba de Ovar</h1>
-            </div>
-            <div>
-                <?php if (($_SESSION['user_role'] ?? '') === 'admin'): ?>
-                    <a href="index.php?acao=criar">Adicionar Sócio</a>
-                    <a href="index.php?acao=registo">Registar Utilizador</a>
-                    <a href="index.php?acao=utilizadores">Gerir Utilizadores</a>
-                <?php endif; ?>
-                <a href="index.php?acao=logout">Logout</a>
-            </div>
-        </header>
+        <?php include __DIR__ . '/partials/header.php'; ?>
 
         <main class="table-container">
             <h2 class="page-title">Gestão de Sócios</h2>
@@ -137,6 +124,8 @@
                 </tbody>
             </table>
         </main>
+
+        <?php include __DIR__ . '/partials/footer.php'; ?>
     </div>
 
 </body>

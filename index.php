@@ -145,8 +145,8 @@ switch ($acao) {
         break;
         
     default:
-        echo "<h2 style='color: red; text-align: center; margin-top: 50px;'>Erro 404: Ação não encontrada no sistema.</h2>";
-        echo "<p style='text-align: center;'><a href='index.php'>Voltar ao início</a></p>";
+        http_response_code(404);
+        include 'views/nao-encontrado.php';
         break;
 }
 ?>

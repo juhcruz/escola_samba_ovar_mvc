@@ -13,6 +13,8 @@
 <body>
 
     <div class="container">
+        <?php include __DIR__ . '/partials/header.php'; ?>
+
         <div class="form-container">
             <h2 class="page-title">Novo Registo</h2>
 
@@ -41,6 +43,8 @@
                 <a href="index.php?acao=login" class="btn btn-secondary" style="margin-left: 10px;">Voltar ao Login</a>
             </form>
         </div>
+
+        <?php include __DIR__ . '/partials/footer.php'; ?>
     </div>
 
 </body>

@@ -11,16 +11,7 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <div class="header-brand">
-                <img class="header-logo" src="../images/logo.jpeg" alt="Logo da Escola de Samba de Ovar">
-                <h1>Escola de Samba de Ovar</h1>
-            </div>
-            <div>
-                <a href="index.php?acao=listar">Listar Sócios</a>
-                <a href="index.php?acao=logout">Logout</a>
-            </div>
-        </header>
+        <?php include __DIR__ . '/partials/header.php'; ?>
 
         <main class="form-container">
             <h2 class="page-title">Adicionar Novo Sócio</h2>
@@ -63,6 +54,8 @@
                 <a class="btn btn-secondary" href="index.php?acao=listar">Cancelar</a>
             </form>
         </main>
+
+        <?php include __DIR__ . '/partials/footer.php'; ?>
     </div>
 
 </body>

@@ -94,6 +94,18 @@ font-weight: bold;
 opacity: 0.8;
 }
 
+.footer {
+margin-top: 30px;
+padding: 18px;
+color: var(--cinzento);
+text-align: center;
+border-top: 1px solid #eee;
+}
+
+.footer p {
+margin: 0;
+}
+
 /* =========================================
 TÍTULOS
 ========================================= */
