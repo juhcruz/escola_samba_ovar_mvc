@@ -2,11 +2,19 @@
 
 class Database
 {
-    private $host = "localhost";
-    private $db_name = "escola_samba_ovar_mvc";
-    private $username = "root";
-    private $password = "";
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
     public $conn;
+
+    public function __construct()
+    {
+        $this->host = getenv('DB_HOST') ?: 'localhost';
+        $this->db_name = getenv('DB_NAME') ?: 'escola_samba_ovar_mvc';
+        $this->username = getenv('DB_USERNAME') ?: 'root';
+        $this->password = getenv('DB_PASSWORD') ?: '';
+    }
 
     // Obter a ligação à base de dados via PDO
     public function getConnection()
@@ -15,13 +23,27 @@ class Database
 
         try {
             $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
+                'mysql:host=' . $this->host . ';charset=utf8mb4',
                 $this->username,
-                $this->password
+                $this->password,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ]
             );
 
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            $this->conn->exec('CREATE DATABASE IF NOT EXISTS `' . str_replace('`', '``', $this->db_name) . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
+
+            $this->conn = new PDO(
+                'mysql:host=' . $this->host . ';dbname=' . $this->db_name . ';charset=utf8mb4',
+                $this->username,
+                $this->password,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ]
+            );
+
             $this->initializeSchema();
         } catch (PDOException $exception) {
             error_log($exception->getMessage());
@@ -43,7 +65,7 @@ class Database
                 contacto VARCHAR(20) NOT NULL,
                 quota_regularizada TINYINT(1) DEFAULT 1,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         ");
 
         $this->conn->exec("
@@ -54,7 +76,7 @@ class Database
                 palavra_passe VARCHAR(255) NOT NULL,
                 role VARCHAR(20) NOT NULL DEFAULT 'user',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         ");
 
         try {

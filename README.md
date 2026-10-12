@@ -11,15 +11,24 @@ Aplicação MVC simples para gerir sócios, quotas e utilizadores da Escola de S
 ## Executar localmente
 
 1. Abra um terminal na pasta do projeto.
-2. Crie a base de dados `escola_samba_ovar_mvc` no MySQL ou MariaDB e ajuste as credenciais em `config/Database.php`, se necessário.
-3. Inicie o servidor:
+2. Certifique-se de que o MySQL/MariaDB está em execução. A aplicação cria automaticamente a base de dados `escola_samba_ovar_mvc` se ela ainda não existir.
+3. Se precisar de configurar credenciais diferentes, defina variáveis de ambiente antes de iniciar:
+
+```bash
+set DB_HOST=localhost
+set DB_USERNAME=root
+set DB_PASSWORD=
+set DB_NAME=escola_samba_ovar_mvc
+```
+
+4. Inicie o servidor:
 
 ```bash
 php -S localhost:8000 -t .
 ```
 
-4. Abra `http://localhost:8000/index.php?acao=login`.
-5. Registe a conta que pretende usar como administrador e entre na aplicação.
+5. Abra `http://localhost:8000/index.php?acao=login`.
+6. Registe a conta que pretende usar como administrador ou, se quiser criar a conta administrativa a partir do início, use o primeiro registo como administrador após alterações manuais na base de dados.
 
 As contas novas são utilizadores normais: podem consultar a lista de sócios, mas não podem criar, editar, apagar sócios ou alterar quotas, nem gerir utilizadores. Para dar acesso de administrador à primeira conta, atualize manualmente o papel da conta na base de dados e inicie sessão novamente:
 
