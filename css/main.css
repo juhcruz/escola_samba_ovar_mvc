@@ -3,8 +3,8 @@
 body {
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
     background:
-        radial-gradient(ellipse at top left, rgba(37, 132, 94, 0.1), transparent 32rem),
-        radial-gradient(ellipse at top right, rgba(210, 91, 145, 0.08), transparent 28rem),
+        radial-gradient(ellipse at top left, rgba(37, 132, 94, 0.16), transparent 34rem),
+        radial-gradient(ellipse at top right, rgba(210, 91, 145, 0.12), transparent 30rem),
         var(--fundo);
     color: var(--texto);
     min-height: 100vh;
@@ -32,25 +32,25 @@ CORES
 ========================================= */
 
 :root {
-    --verde: #25845e;
-    --verde-escuro: #174c38;
-    --verde-claro: #dce9e1;
-    --rosa: #d25b91;
-    --rosa-escuro: #a93d70;
-    --rosa-claro: #f0dfe7;
-    --verde-escuro-2: #123d2d;
-    --cinza-escuro: #2f3a3d;
-    --cinza-medio: #58645f;
-    --cinza-claro: #e3e3dc;
-    --branco: #e9e5dd;
-    --fundo: #d8d4cb;
-    --linha: rgba(47, 58, 61, 0.18);
-    --sombra: rgba(20, 52, 40, 0.12);
-    --texto: #202a26;
-    --texto-suave: #46544e;
-    --sucesso: #1c8a5d;
-    --erro: #b53a48;
-    --aviso: #936700;
+    --verde: #42bd83;
+    --verde-escuro: #247b55;
+    --verde-claro: #19382b;
+    --rosa: #ee75aa;
+    --rosa-escuro: #bd4e82;
+    --rosa-claro: #3b2632;
+    --verde-escuro-2: #174d36;
+    --cinza-escuro: #dce4df;
+    --cinza-medio: #65736d;
+    --cinza-claro: #26312c;
+    --branco: #1c2521;
+    --fundo: #111815;
+    --linha: rgba(219, 233, 224, 0.12);
+    --sombra: rgba(0, 0, 0, 0.24);
+    --texto: #e7eee9;
+    --texto-suave: #b3c0b8;
+    --sucesso: #6bd59d;
+    --erro: #ff7b83;
+    --aviso: #f0c66a;
 }
 
 /* =========================================
@@ -68,7 +68,7 @@ CABEÇALHO
 
 .header {
     position: relative;
-    background: #e5e0d7;
+    background: #171f1b;
     color: var(--texto);
     padding: 16px 28px;
     display: flex;
@@ -108,7 +108,7 @@ CABEÇALHO
 .header h1 {
     font-size: clamp(1.05rem, 1.8vw, 1.6rem);
     margin: 0;
-    color: var(--verde-escuro);
+    color: var(--texto);
     font-weight: 700;
 }
 
@@ -130,7 +130,7 @@ CABEÇALHO
 
 .header a:hover {
     background: linear-gradient(135deg, var(--verde-claro) 0%, var(--rosa-claro) 100%);
-    color: var(--verde-escuro);
+    color: var(--texto);
 }
 
 .header a:focus-visible,
@@ -166,7 +166,7 @@ h3 {
 }
 
 .page-title {
-    color: var(--verde-escuro);
+    color: var(--texto);
     margin-bottom: 26px;
     font-size: clamp(1.8rem, 3vw, 2.4rem);
     letter-spacing: -0.035em;
@@ -206,24 +206,24 @@ BOTÕES
 
 .btn-primary,
 .btn-success {
-    background: var(--verde-escuro);
-    color: #fff;
+    background: var(--verde);
+    color: #102018;
 }
 
 .btn-primary:hover,
 .btn-success:hover {
-    background: var(--verde);
+    background: #63d59c;
 }
 
 .btn-pink,
 .btn-warning {
-    background: var(--rosa-escuro);
-    color: #fff;
+    background: var(--rosa);
+    color: #27121c;
 }
 
 .btn-pink:hover,
 .btn-warning:hover {
-    background: var(--rosa);
+    background: #f592bc;
 }
 
 .btn-danger {
@@ -245,7 +245,7 @@ FORMULÁRIOS
     padding: 28px;
     border-radius: 0;
     border: 1px solid var(--linha);
-    box-shadow: 0 8px 24px rgba(37, 49, 45, 0.06);
+    box-shadow: 0 12px 32px var(--sombra);
     border-top: 3px solid var(--verde);
     max-width: 760px;
     margin: 24px auto;
@@ -259,29 +259,30 @@ FORMULÁRIOS
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--verde-escuro);
+    color: var(--verde);
 }
 
 .form-control {
     width: 100%;
     padding: 12px 13px;
-    border: 1px solid rgba(47, 58, 61, 0.18);
+    border: 1px solid var(--linha);
     border-radius: 0;
     font-size: 1rem;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    background: var(--branco);
+    background: #141c18;
+    color: var(--texto);
 }
 
 .form-control:focus {
     border-color: var(--verde);
-    box-shadow: 0 0 0 3px rgba(27, 127, 78, 0.06);
+    box-shadow: 0 0 0 3px rgba(66, 189, 131, 0.15);
 }
 
 .form-link {
     display: inline-block;
     margin-top: 14px;
-    color: var(--verde-escuro);
+    color: var(--verde);
     font-weight: 600;
 }
 
@@ -294,7 +295,7 @@ TABELA
     padding: 20px;
     border-radius: 0;
     border: 1px solid var(--linha);
-    box-shadow: 0 8px 24px rgba(37, 49, 45, 0.06);
+    box-shadow: 0 12px 32px var(--sombra);
     border-top: 3px solid var(--verde);
     overflow-x: auto;
 }
@@ -305,8 +306,8 @@ TABELA
 }
 
 .table th {
-    background: var(--verde-escuro);
-    color: #fff;
+    background: #174d36;
+    color: #e8fff1;
     padding: 12px 10px;
     text-align: left;
     font-size: 0.9rem;
@@ -315,9 +316,9 @@ TABELA
 
 .table td {
     padding: 12px 10px;
-    border-bottom: 1px solid rgba(47, 58, 61, 0.08);
+    border-bottom: 1px solid var(--linha);
     color: var(--texto-suave);
-    background: #e9e5dd;
+    background: #1c2521;
 }
 
 .table tbody tr:hover {
@@ -325,11 +326,11 @@ TABELA
 }
 
 .table tbody tr:nth-child(even) td {
-    background: #e2e2da;
+    background: #202a25;
 }
 
 .table tbody tr:hover td {
-    background: linear-gradient(90deg, rgba(37, 132, 94, 0.14), rgba(210, 91, 145, 0.12));
+    background: linear-gradient(90deg, rgba(66, 189, 131, 0.16), rgba(238, 117, 170, 0.12));
 }
 
 /* =========================================
@@ -347,12 +348,12 @@ STATUS
 
 .status-ativo {
     background: var(--verde-claro);
-    color: var(--verde-escuro);
+    color: var(--sucesso);
 }
 
 .status-inativo {
     background: var(--rosa-claro);
-    color: var(--rosa-escuro);
+    color: var(--rosa);
 }
 
 /* =========================================
@@ -372,12 +373,12 @@ ALERTAS
 }
 
 .alert-danger {
-    background: #fdf1f2;
+    background: #3a2024;
     color: var(--erro);
 }
 
 .alert-warning {
-    background: #fff7e8;
+    background: #382f1d;
     color: var(--aviso);
 }
 
@@ -395,7 +396,10 @@ LOGIN
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #d4d0c7;
+    background:
+        radial-gradient(ellipse at 20% 15%, rgba(66, 189, 131, 0.2), transparent 32rem),
+        radial-gradient(ellipse at 85% 85%, rgba(238, 117, 170, 0.17), transparent 30rem),
+        var(--fundo);
     padding: 24px;
 }
 
@@ -405,7 +409,7 @@ LOGIN
     padding: 30px 26px 24px;
     border-radius: 0;
     border: 1px solid var(--linha);
-    box-shadow: 0 14px 36px rgba(23, 63, 50, 0.1);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
     border-top: 3px solid var(--rosa);
 }
 
@@ -419,7 +423,7 @@ LOGIN
     height: 84px;
     object-fit: cover;
     border-radius: 16px;
-    background: var(--cinza-claro);
+    background: #141c18;
     padding: 8px;
     margin: 0 auto;
     border: 1px solid var(--linha);
@@ -427,7 +431,7 @@ LOGIN
 
 .login-container h2 {
     text-align: center;
-    color: var(--verde-escuro);
+    color: var(--texto);
     margin-bottom: 22px;
     font-size: clamp(1.3rem, 2vw, 1.7rem);
 }
@@ -453,27 +457,27 @@ CARDS / DASHBOARD
     padding: 22px;
     border-radius: 0;
     border: 1px solid var(--linha);
-    box-shadow: 0 8px 22px rgba(37, 49, 45, 0.05);
+    box-shadow: 0 10px 26px var(--sombra);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .card:nth-child(1) {
     border-left: 4px solid var(--verde);
-    background: linear-gradient(135deg, #e9e5dd 0%, #dce9e1 100%);
+    background: linear-gradient(135deg, #1c2521 0%, #19382b 100%);
 }
 
 .card:nth-child(2) {
     border-left: 4px solid var(--rosa);
-    background: linear-gradient(135deg, #e9e5dd 0%, #f0dfe7 100%);
+    background: linear-gradient(135deg, #1c2521 0%, #3b2632 100%);
 }
 
 .card:nth-child(3) {
     border-left: 4px solid var(--verde);
-    background: linear-gradient(135deg, #e9e5dd 0%, #dfe4de 100%);
+    background: linear-gradient(135deg, #1c2521 0%, #202a25 100%);
 }
 
 .card:hover {
-    box-shadow: 0 12px 28px rgba(37, 49, 45, 0.1);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.34);
     transform: translateY(-2px);
 }
 
@@ -487,7 +491,7 @@ CARDS / DASHBOARD
 .card .number {
     font-size: clamp(1.8rem, 3vw, 2.2rem);
     font-weight: 700;
-    color: var(--verde-escuro);
+    color: var(--verde);
     margin: 0;
 }
 

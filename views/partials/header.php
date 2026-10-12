@@ -1,14 +1,7 @@
-<?php
-$scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/index.php');
-$appBasePath = rtrim(dirname($scriptPath), '/');
-$logoPath = ($appBasePath === '' || $appBasePath === '.')
-    ? '/images/logo.jpeg'
-    : $appBasePath . '/images/logo.jpeg';
-$userRole = $_SESSION['user_role'] ?? '';
-?>
+<?php $userRole = $_SESSION['user_role'] ?? ''; ?>
 <header class="header">
     <div class="header-brand">
-        <img class="header-logo" src="<?= htmlspecialchars($logoPath, ENT_QUOTES, 'UTF-8') ?>" alt="Logo da Escola de Samba Juventude Vareira">
+        <img class="header-logo" src="images/logo.jpeg" alt="Logo da Escola de Samba Juventude Vareira">
         <h1>Escola de Samba Juventude Vareira</h1>
     </div>
     <nav aria-label="Navegação principal">

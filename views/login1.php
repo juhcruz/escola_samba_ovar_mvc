@@ -12,9 +12,9 @@
 <body class="login-page">
     <main class="login-container">
         <div class="login-logo-wrap">
-            <img class="login-logo" src="../images/logo.jpeg" alt="Logo da Escola de Samba Juventude Vareira">
+            <img class="login-logo" src="images/logo.jpeg" alt="Logo da Escola de Samba Juventude Vareira">
         </div>
-        <h2>Carnaval de Ovar - Autenticação</h2>
+        <h2>GRES Juventude Vareira</h2>
 
         <?php if (isset($erro)): ?>
             <p class="alert alert-danger"><?= htmlspecialchars($erro) ?></p>
